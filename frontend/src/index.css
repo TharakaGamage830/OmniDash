@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #ec4899;
+  --primary-light: #fbcfe8;
+  --secondary: #d8b4fe;
+  --accent: #fcd34d;
+  --background: #fff5f7;
+}
+
+body {
+  background-color: var(--background);
+  font-family: 'Inter', sans-serif;
+}
+
+@keyframes logo-spin-down {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(1440deg);
+  }
+
+  /* 4 full rotations */
+}
+
+.animate-logo-spin {
+  animation: logo-spin-down 3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
