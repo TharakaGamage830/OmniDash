@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Product } from '../types';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'https://omnidash-dmsn.onrender.com/api',
 });
 
 export const getProducts = (params?: { search?: string; category?: string; sort?: string; stockStatus?: string }) =>

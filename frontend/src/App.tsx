@@ -4,7 +4,7 @@ import { ProductCard } from './components/ProductCard';
 import { QuotationDrawer } from './components/QuotationDrawer';
 import { useQuotation } from './hooks/useQuotation';
 import api, { getProducts, trackClick } from './services/api';
-import { Search, X, LayoutGrid, Grid3X3, StretchHorizontal } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { Product } from './types';
 
 function App() {
