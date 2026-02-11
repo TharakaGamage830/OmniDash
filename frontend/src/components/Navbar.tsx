@@ -8,14 +8,14 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartClick }) => {
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-pink-100 px-6 py-4 flex items-center justify-between">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-pink-100 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-                <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg shadow-pink-200 ring-2 ring-white">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden shadow-lg shadow-pink-200 ring-2 ring-white">
                     <img src="/logo.png" alt="Logo" className="w-full h-full object-cover scale-110" />
                 </div>
                 <div className="flex flex-col">
-                    <span className="text-pink-600 font-black tracking-tighter text-xl leading-none">Anu's Touch</span>
-                    <span className="text-[10px] text-pink-400 font-bold uppercase tracking-widest pl-0.5">Gift Shop</span>
+                    <span className="text-pink-600 font-black tracking-tighter text-lg sm:text-xl leading-none">Anu's Touch</span>
+                    <span className="text-[9px] sm:text-[10px] text-pink-400 font-bold uppercase tracking-widest pl-0.5">Gift Shop</span>
                 </div>
             </div>
 

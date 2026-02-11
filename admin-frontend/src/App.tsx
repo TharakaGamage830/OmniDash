@@ -49,7 +49,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
                     </button>
                 </header>
 
-                <main className="p-6 md:p-12 lg:p-16 mt-16 lg:mt-0 flex-1 max-w-[1600px]">
+                <main className="p-4 sm:p-6 md:p-12 lg:p-16 mt-16 lg:mt-0 flex-1 max-w-[1600px]">
                     {children}
                 </main>
             </div>

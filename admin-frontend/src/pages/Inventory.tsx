@@ -3,6 +3,8 @@ import { getAdminProducts, handleGRN, handleReturn, getStockHistory } from '../s
 import { Download, Upload, PackageCheck, History as HistoryIcon, ArrowRight } from 'lucide-react';
 import { Product } from '../types';
 import { PageHeader } from '../components/PageHeader';
+import { ExportDropdown } from '../components/ExportDropdown';
+import { exportToCSV, exportToPDF } from '../utils/ExportUtils';
 
 const Inventory: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -17,6 +19,50 @@ const Inventory: React.FC = () => {
         fetchProducts();
         fetchHistory();
     }, []);
+
+    const handleExportStockCSV = () => {
+        const data = products.map(p => ({
+            code: p.productCode,
+            name: p.name,
+            qty: p.stock.totalQty,
+            status: p.stock.status
+        }));
+        exportToCSV(data, 'Stock_Levels_Report', ['code', 'name', 'qty', 'status']);
+    };
+
+    const handleExportStockPDF = () => {
+        const data = products.map(p => ({
+            code: p.productCode,
+            name: p.name,
+            qty: p.stock.totalQty,
+            status: p.stock.status
+        }));
+        exportToPDF(data, 'Stock_Levels_Report', 'Current Stock Levels', ['Code', 'Product', 'Qty', 'Status'], ['code', 'name', 'qty', 'status']);
+    };
+
+    const handleExportHistoryCSV = () => {
+        const filtered = history.filter(m => m.type === historyTab);
+        const data = filtered.map(m => ({
+            date: new Date(m.createdAt).toLocaleString(),
+            product: m.productName,
+            type: m.type,
+            change: m.quantity,
+            balance: m.newQty
+        }));
+        exportToCSV(data, `Inventory_${historyTab}_History`, ['date', 'product', 'type', 'change', 'balance']);
+    };
+
+    const handleExportHistoryPDF = () => {
+        const filtered = history.filter(m => m.type === historyTab);
+        const data = filtered.map(m => ({
+            date: new Date(m.createdAt).toLocaleString(),
+            name: m.productName,
+            type: m.type,
+            change: `${m.type === 'GRN' ? '+' : '-'}${m.quantity}`,
+            bal: m.newQty
+        }));
+        exportToPDF(data, `Inventory_${historyTab}_History`, `Inventory History (${historyTab})`, ['Date', 'Product', 'Type', 'Change', 'Balance'], ['date', 'name', 'type', 'change', 'bal']);
+    };
 
     const fetchHistory = async () => {
         try {
@@ -59,6 +105,7 @@ const Inventory: React.FC = () => {
                             <PackageCheck className="w-5 h-5 text-indigo-500" />
                             <h2 className="font-bold text-slate-800 uppercase tracking-wider text-xs">Current Stock Levels</h2>
                         </div>
+                        <ExportDropdown onExportCSV={handleExportStockCSV} onExportPDF={handleExportStockPDF} />
                     </div>
                     <div className="p-0">
                         {/* Desktop Table */}
@@ -159,14 +206,17 @@ const Inventory: React.FC = () => {
             {/* Inventory History Section */}
             <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-slate-50 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <HistoryIcon className="w-5 h-5 text-indigo-500" />
-                        <h2 className="font-bold text-slate-800 uppercase tracking-wider text-xs">Inventory History</h2>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                        <div className="flex items-center gap-2">
+                            <HistoryIcon className="w-5 h-5 text-indigo-500" />
+                            <h2 className="font-bold text-slate-800 uppercase tracking-wider text-xs">Inventory History</h2>
+                        </div>
+                        <div className="flex bg-slate-100 p-1 rounded-xl w-fit">
+                            <button onClick={() => setHistoryTab('GRN')} className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${historyTab === 'GRN' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-400'}`}>GRN</button>
+                            <button onClick={() => setHistoryTab('RETURN')} className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${historyTab === 'RETURN' ? 'bg-white text-orange-600 shadow-sm' : 'text-slate-400'}`}>RETURN</button>
+                        </div>
                     </div>
-                    <div className="flex bg-slate-100 p-1 rounded-xl">
-                        <button onClick={() => setHistoryTab('GRN')} className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${historyTab === 'GRN' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-400'}`}>GRN</button>
-                        <button onClick={() => setHistoryTab('RETURN')} className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${historyTab === 'RETURN' ? 'bg-white text-orange-600 shadow-sm' : 'text-slate-400'}`}>RETURN</button>
-                    </div>
+                    <ExportDropdown onExportCSV={handleExportHistoryCSV} onExportPDF={handleExportHistoryPDF} />
                 </div>
                 <div className="p-6">
                     <div className="space-y-4">

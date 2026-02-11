@@ -32,24 +32,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdd }) => {
 
             <div className="p-3 sm:p-5">
                 <div className="flex flex-col mb-2">
-                    <p className="text-[8px] sm:text-[10px] font-bold text-pink-400 uppercase tracking-widest mb-0.5">{product.category}</p>
-                    <div className="flex justify-between items-start gap-2">
-                        <h3 className="font-bold text-slate-800 leading-tight group-hover:text-pink-600 transition-colors uppercase text-xs sm:text-sm line-clamp-2">{product.name}</h3>
-                        <p className="font-black text-pink-600 text-xs sm:text-sm shrink-0">Rs.{product.price.toLocaleString()}</p>
+                    <p className="text-[9px] sm:text-[10px] font-bold text-pink-400 uppercase tracking-widest mb-1">{product.category}</p>
+                    <div className="flex flex-col gap-1">
+                        <h3 className="font-bold text-slate-800 leading-tight group-hover:text-pink-600 transition-colors uppercase text-[11px] sm:text-sm line-clamp-2 min-h-[2.5em]">{product.name}</h3>
+                        <p className="font-black text-pink-600 text-xs sm:text-sm">Rs.{product.price.toLocaleString()}</p>
                     </div>
                 </div>
 
                 <p className="text-[10px] sm:text-xs text-slate-500 line-clamp-1 sm:line-clamp-2 mb-4 h-4 sm:h-8">{product.description}</p>
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
-                    <p className="text-[9px] font-mono text-slate-400 order-2 sm:order-1">{product.productCode}</p>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <p className="text-[8px] sm:text-[10px] font-mono text-slate-400 order-2 sm:order-1">{product.productCode}</p>
                     <button
                         onClick={() => onAdd(product)}
-                        className="w-full sm:flex-1 bg-pink-100 hover:bg-pink-500 text-pink-600 hover:text-white px-2 sm:px-4 py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1 sm:gap-2 group/btn order-1 sm:order-2"
+                        className="w-full sm:flex-1 bg-pink-100 hover:bg-pink-500 text-pink-600 hover:text-white px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1 sm:gap-2 group/btn order-1 sm:order-2"
                     >
                         <Plus className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover/btn:rotate-90" />
-                        <span className="hidden xs:inline">ADD TO QUOTE</span>
-                        <span className="xs:hidden">ADD</span>
+                        <span>QUICK ADD</span>
                     </button>
                 </div>
             </div>

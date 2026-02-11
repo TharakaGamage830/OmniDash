@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { Plus, Trash2, X } from 'lucide-react';
 import { PageHeader } from '../components/PageHeader';
+import { ExportDropdown } from '../components/ExportDropdown';
+import { exportToCSV, exportToPDF } from '../utils/ExportUtils';
 
 const CategoryManagement: React.FC = () => {
     const [categories, setCategories] = useState<any[]>([]);
@@ -9,6 +11,17 @@ const CategoryManagement: React.FC = () => {
     const [formData, setFormData] = useState({ name: '', prefix: '', description: '' });
 
     useEffect(() => { fetchCategories(); }, []);
+
+    const handleExportCSV = () => {
+        const headers = ['name', 'prefix', 'description'];
+        exportToCSV(categories, 'Categories_Report', headers);
+    };
+
+    const handleExportPDF = () => {
+        const headers = ['Category Name', 'Prefix', 'Description'];
+        const keys = ['name', 'prefix', 'description'];
+        exportToPDF(categories, 'Categories_Report', 'Category List', headers, keys);
+    };
 
     const fetchCategories = async () => {
         try {
@@ -41,20 +54,23 @@ const CategoryManagement: React.FC = () => {
 
     return (
         <div className="space-y-12">
-            <div className="flex justify-between items-start gap-6">
-                <div className="flex-1">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+                <div className="flex-1 w-full">
                     <PageHeader
                         title="Category Management"
                         subtitle="Organize your product catalog with custom categories and prefixes."
                     />
                 </div>
-                <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="bg-indigo-600 text-white px-8 py-4 rounded-3xl font-bold flex items-center gap-3 hover:bg-slate-900 transition-all shadow-xl shadow-indigo-100 hover:shadow-slate-200 shrink-0 mt-4 active:scale-95"
-                >
-                    <Plus className="w-5 h-5 stroke-[3px]" />
-                    <span>Add Category</span>
-                </button>
+                <div className="flex flex-col xs:flex-row items-center gap-3 w-full sm:w-auto">
+                    <ExportDropdown onExportCSV={handleExportCSV} onExportPDF={handleExportPDF} />
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-3xl font-bold flex items-center justify-center gap-3 hover:bg-slate-900 transition-all shadow-xl shadow-indigo-100 hover:shadow-slate-200 shrink-0 active:scale-95"
+                    >
+                        <Plus className="w-5 h-5 stroke-[3px]" />
+                        <span>Add Category</span>
+                    </button>
+                </div>
             </div>
 
             <div className="bg-white lg:bg-white rounded-3xl lg:border border-slate-100 lg:shadow-sm overflow-hidden">

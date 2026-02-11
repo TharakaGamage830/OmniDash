@@ -3,6 +3,8 @@ import api, { getAdminProducts, addProduct, updateProduct, deleteProduct, toggle
 import { Plus, Edit2, Trash2, X, CheckCircle2, Circle } from 'lucide-react';
 import { Product } from '../types';
 import { PageHeader } from '../components/PageHeader';
+import { ExportDropdown } from '../components/ExportDropdown';
+import { exportToCSV, exportToPDF } from '../utils/ExportUtils';
 
 const ProductList: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -16,6 +18,33 @@ const ProductList: React.FC = () => {
         fetchProducts();
         fetchCategories();
     }, []);
+
+    const handleExportCSV = () => {
+        const flattenedData = products.map(p => ({
+            productCode: p.productCode,
+            name: p.name,
+            category: p.category,
+            price: p.price,
+            stockQty: p.stock.totalQty,
+            stockStatus: p.stock.status
+        }));
+        const headers = ['productCode', 'name', 'category', 'price', 'stockQty', 'stockStatus'];
+        exportToCSV(flattenedData, 'Products_Report', headers);
+    };
+
+    const handleExportPDF = () => {
+        const flattenedData = products.map(p => ({
+            code: p.productCode,
+            name: p.name,
+            cat: p.category,
+            price: `Rs.${p.price.toLocaleString()}`,
+            qty: p.stock.totalQty,
+            status: p.stock.status
+        }));
+        const headers = ['Code', 'Product Name', 'Category', 'Price', 'Qty', 'Status'];
+        const keys = ['code', 'name', 'cat', 'price', 'qty', 'status'];
+        exportToPDF(flattenedData, 'Products_Report', 'Product Catalog', headers, keys);
+    };
 
     const fetchProducts = async () => {
         const res = await getAdminProducts();
@@ -81,20 +110,23 @@ const ProductList: React.FC = () => {
 
     return (
         <div className="space-y-12">
-            <div className="flex justify-between items-start gap-6">
-                <div className="flex-1">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+                <div className="flex-1 w-full">
                     <PageHeader
                         title="Product Catalog"
                         subtitle="Detailed overview and management of all jewelry and accessory items."
                     />
                 </div>
-                <button
-                    onClick={() => { setEditingProduct(null); setFormData({ name: '', description: '', price: 0, category: '', images: [] }); setIsModalOpen(true); }}
-                    className="bg-indigo-600 text-white px-8 py-4 rounded-3xl font-bold flex items-center gap-3 hover:bg-slate-900 transition-all shadow-xl shadow-indigo-100 hover:shadow-slate-200 shrink-0 mt-4 active:scale-95"
-                >
-                    <Plus className="w-5 h-5 stroke-[3px]" />
-                    <span>Add Product</span>
-                </button>
+                <div className="flex flex-col xs:flex-row items-center gap-3 w-full sm:w-auto">
+                    <ExportDropdown onExportCSV={handleExportCSV} onExportPDF={handleExportPDF} />
+                    <button
+                        onClick={() => { setEditingProduct(null); setFormData({ name: '', description: '', price: 0, category: '', images: [] }); setIsModalOpen(true); }}
+                        className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-3xl font-bold flex items-center justify-center gap-3 hover:bg-slate-900 transition-all shadow-xl shadow-indigo-100 hover:shadow-slate-200 shrink-0 active:scale-95"
+                    >
+                        <Plus className="w-5 h-5 stroke-[3px]" />
+                        <span>Add Product</span>
+                    </button>
+                </div>
             </div>
 
             <div className="bg-white lg:bg-white rounded-3xl lg:border border-slate-100 lg:shadow-sm overflow-hidden">

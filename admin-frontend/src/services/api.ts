@@ -11,6 +11,17 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
 export const adminLogin = (creds: any) => api.post<{ token: string }>('/admin/login', creds);
 export const getAdminProducts = () => api.get<Product[]>('/products?includeHidden=true');
 export const addProduct = (data: any) => api.post<Product>('/products/admin/add', data);

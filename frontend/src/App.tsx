@@ -58,7 +58,7 @@ function App() {
         <div className="min-h-screen bg-[#fff5f7]">
             <Navbar cartCount={items.length} onCartClick={() => setIsCartOpen(true)} />
 
-            <main className="max-w-7xl mx-auto px-6 pt-32 pb-20">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-20">
                 <div className="text-center mb-16 space-y-4">
                     <div
                         onClick={() => setShowLogoPopup(true)}
@@ -67,10 +67,10 @@ function App() {
                         <img src="/logo.png" alt="Anu's Touch Logo" className="w-full h-full object-cover scale-110 group-hover:rotate-6 transition-transform" />
                     </div>
                     <p className="text-pink-400 font-bold tracking-[0.3em] uppercase text-xs mb-2">Anu's Touch</p>
-                    <h1 className="text-5xl md:text-7xl font-black text-slate-800 tracking-tighter">
+                    <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-slate-800 tracking-tighter">
                         A touch of <span className="text-pink-500 italic underline decoration-pink-200">LOVE</span> in every gift.
                     </h1>
-                    <p className="text-slate-500 max-w-xl mx-auto text-lg italic">
+                    <p className="text-slate-500 max-w-xl mx-auto text-base sm:text-lg italic">
                         Specializing in Key tags, Hair clips, Flower bouquets, Pencil cases, and more.
                     </p>
                 </div>
@@ -157,9 +157,9 @@ function App() {
                     </div>
                 ) : (
                     <div className={`grid gap-4 md:gap-8 ${gridCols === 0 ? 'grid-cols-2 lg:grid-cols-4' :
-                            gridCols === 1 ? 'grid-cols-1' : gridCols === 2 ? 'grid-cols-2' : gridCols === 3 ? 'grid-cols-3' :
-                                gridCols === 4 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' :
-                                    gridCols === 6 ? 'grid-cols-2 lg:grid-cols-6' : 'grid-cols-3 lg:grid-cols-8'
+                        gridCols === 1 ? 'grid-cols-1' : gridCols === 2 ? 'grid-cols-2' : gridCols === 3 ? 'grid-cols-3' :
+                            gridCols === 4 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' :
+                                gridCols === 6 ? 'grid-cols-2 lg:grid-cols-6' : 'grid-cols-3 lg:grid-cols-8'
                         }`}>
                         {products.map(product => (
                             <ProductCard key={product._id} product={product} onAdd={handleAdd} />
